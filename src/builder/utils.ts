@@ -120,15 +120,16 @@ export function getBundlessTargets(config: IBundlessConfig) {
 export function getBundlessTransformRuntime (config: IBundlessConfig) {
   try {
     const pkgPath = require.resolve('@babel/runtime/package.json')
+    const pkg = require(pkgPath)
 
-    if (pkgPath) {
+    if (pkg) {
       return {
         absoluteRuntime: false,
         // still use legacy esm helpers, to avoid double imports of runtime helpers
         // from webpack 4 bundlers, such as Umi 3, antd-tools & etc.
         useESModules:
           config.format === IFatherBundlessTypes.ESM ? true : false,
-        version: require(pkgPath).version,
+        version: pkg.version,
       }
     }
   } catch (error) {
